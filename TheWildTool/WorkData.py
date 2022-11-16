@@ -1,7 +1,10 @@
+import os
+import time
+
+from threading import Thread
+
 from moviepy.editor import VideoFileClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
-
-import os
 
 
 class VideoExtract:
@@ -78,7 +81,23 @@ class VideoExtract:
 
                 save_route_clip = os.path.abspath(f'{self.save_folder}/{file_q_c}-{self.dataset_name}')
 
-                ffmpeg_extract_audio(file_q, f'{save_route_clip}.{self.to_format}')
+                print('')
+
+                
+                while True:
+                    converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.{self.to_format}'))
+                    converter_thread.start()
+
+                    while True:
+                        for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
+                            print(f'Extract audio... {loading_icon}', end='\r')
+                            time.sleep(.5)
+                            if converter_thread.isAlive() is False:
+                                break
+
+                    break
+
+
 
                 print(f'Successfully saved {file_q_c}-{self.dataset_name}.{self.to_format} inside the folder {save_route_clip}')
 
