@@ -88,7 +88,6 @@ class VideoExtract:
 
                 save_route_clip = os.path.abspath(f'{self.save_folder}/{file_q_c}-{self.dataset_name}')
 
-                print('')
 
                 loading = True
                 
@@ -107,18 +106,26 @@ class VideoExtract:
 
                 print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {save_route_clip}')
 
-class ProcessAudio:
+
+
+class ProccessAudio:
     """Extract info from your audio files.
     """    
+
+
+
     def __init__(self) -> None:
         pass
 
 
     extract_queue = []
+    wav_audios_objects = []
+
+
+
+
+
     
-
-
-
     def add_to_queue(self, route_files: list):
         """Adds a list of files to the queue.
 
@@ -129,6 +136,9 @@ class ProcessAudio:
         Raises:
             ValueError: You are passing another type of data that is not a list.
         """
+
+
+
         if type(route_files).__name__ == 'list':
             for route in route_files:
 
@@ -136,32 +146,51 @@ class ProcessAudio:
                     if os.path.abspath(route).split('.')[-1] == 'wav': # is wav file.
                         self.extract_queue.append(route)
                     
-
-
             print(f'\nAdd to queue success. Total queue {len(self.extract_queue)}')
-
         else:
             raise ValueError('(ErrorType) Only Support List.')
 
 
 
 
+        if len(self.extract_queue) == 0:
+            raise ValueError('(QueueEmpty) The queue is empty. You can add audios to the queue using ProccessAudio.add_to_queue')
 
-    def read_audio(self, index_queue:int):
-        """Displays the audio loaded in extract_queue.
+
+
+        for file_audio_route in self.extract_queue:
+            fs, read_audio_file = wavfile.read(file_audio_route) # Read wav file
+            self.wav_audios_objects.append((read_audio_file, fs))
+        
+
+
+
+
+
+    # Con lo anterior, tenemos los audios wav cargados. De aquí para abajo, comenzaremos ahora sí a trabajar con ellos.
+
+    def show(self, index: int):
+        """Show audio in a notebook.
 
         Args:
-            index_queue (int): Index of element belonging to extract_queue.
+            index (int): Index of element belonging to extract_queue.
 
-            
         Raises:
-            ValueError: Index out of range.
-        """        
-        
-        if index_queue > len(self.extract_queue ) - 1:
-            raise ValueError('(IndexOutOfRange) You have given an index that does not match any of the tail! Update the queue by calling ProcessAudio.add_to_queue')
+            IndexError: Index out of range.
+
+        Returns:
+            IPython.display.Audio: The audio file to show. Use print.
+        """            
 
 
-        read_audio_file = wavfile.read(self.extract_queue[index_queue]) # Read wav file
 
-        return read_audio_file
+
+        if index > len(self.wav_audios_objects) - 1 or index < 0:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_audios_objects)} ')
+
+        else:
+            print(self.wav_audios_objects[0][0][1000000:1000050])
+            print(len(self.wav_audios_objects[0][0]))
+            IPython.display.Audio(self.wav_audios_objects[index][0].T, rate=self.wav_audios_objects[index][1])
+
+
