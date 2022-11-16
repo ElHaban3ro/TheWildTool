@@ -189,8 +189,6 @@ class ProccessAudio:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_audios_objects)} ')
 
         else:
-            print(self.wav_audios_objects[0][0][1000000:1000050])
-            print(len(self.wav_audios_objects[0][0]))
-            IPython.display.Audio(self.wav_audios_objects[index][0].T, rate=self.wav_audios_objects[index][1])
+            return IPython.display.Audio(self.wav_audios_objects[index][0].T, rate=self.wav_audios_objects[index][1])
 
 
