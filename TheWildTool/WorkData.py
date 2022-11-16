@@ -5,6 +5,8 @@ from threading import Thread
 
 from moviepy.editor import VideoFileClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
+import IPython
+from scipy.io import wavfile
 
 
 class VideoExtract:
@@ -20,12 +22,11 @@ class VideoExtract:
 
 
     def __init__(self) -> None:
-        self.to_format = 'mp3'
         self.dataset_name = 'MyAudioDataset'
         self.save_folder = './'
 
     def __str__(self) -> str:
-        return f'Converting Format: {self.to_format}'
+        return f'Converting Format: wav'
 
 
 
@@ -39,11 +40,17 @@ class VideoExtract:
         Raises:
             ValueError: A different object was passed to a list.
         """        
+        formats = ['mp4']
 
         if type(videos_route).__name__ == 'list':
             for route in videos_route:
                 if os.path.isfile(os.path.abspath(route)):
-                    self.converter_queue.append(os.path.abspath(route))
+                    if os.path.abspath(route).split('.')[-1] in formats: # is wav file.
+                        self.converter_queue.append(os.path.abspath(route))
+
+
+            print(f'\nAdd to queue success. Total queue {len(self.converter_queue)}')
+
 
         else: 
             raise ValueError('(ErrorType) Only Support List.')
@@ -86,17 +93,75 @@ class VideoExtract:
                 loading = True
                 
                 while loading:
-                    converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.{self.to_format}'))
+                    converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.wav'))
                     converter_thread.start()
 
                     while loading:
                         for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
-                            print(f'{converter_thread.is_alive()} --- Extract audio from files... {loading_icon}', end='\r')
+                            print(f'Extract audio from files... {loading_icon}', end='\r')
                             time.sleep(.5)
                             if converter_thread.is_alive() is False:
                                 loading = False
 
 
 
-                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.{self.to_format}\ninside the folder {save_route_clip}')
+                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {save_route_clip}')
 
+class ProcessAudio:
+    """Extract info from your audio files.
+    """    
+    def __init__(self) -> None:
+        pass
+
+
+    extract_queue = []
+    
+
+
+
+    def add_to_queue(self, route_files: list):
+        """Adds a list of files to the queue.
+
+        Args:
+            route_file (str): List of routes.
+
+            
+        Raises:
+            ValueError: You are passing another type of data that is not a list.
+        """
+        if type(route_files).__name__ == 'list':
+            for route in route_files:
+
+                if os.path.isfile(os.path.abspath(route)):
+                    if os.path.abspath(route).split('.')[-1] == 'wav': # is wav file.
+                        self.extract_queue.append(route)
+                    
+
+
+            print(f'\nAdd to queue success. Total queue {len(self.extract_queue)}')
+
+        else:
+            raise ValueError('(ErrorType) Only Support List.')
+
+
+
+
+
+    def read_audio(self, index_queue:int):
+        """Displays the audio loaded in extract_queue.
+
+        Args:
+            index_queue (int): Index of element belonging to extract_queue.
+
+            
+        Raises:
+            ValueError: Index out of range.
+        """        
+        
+        if index_queue > len(self.extract_queue ) - 1:
+            raise ValueError('(IndexOutOfRange) You have given an index that does not match any of the tail! Update the queue by calling ProcessAudio.add_to_queue')
+
+
+        read_audio_file = wavfile.read(self.extract_queue[index_queue]) # Read wav file
+
+        return read_audio_file
