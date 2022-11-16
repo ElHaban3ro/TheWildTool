@@ -19,7 +19,7 @@ class VideoExtract:
     def __init__(self) -> None:
         self.to_format = 'mp3'
         self.dataset_name = 'MyAudioDataset'
-        self.folder_to_save = './'
+        self.save_folder = './'
 
     def __str__(self) -> str:
         return f'Converting Format: {self.to_format}'
@@ -50,7 +50,10 @@ class VideoExtract:
         
     def to_audio(self):
         """Extract the audio from the video.
-        """        
+
+        Raises:
+            FileNotFoundError: The save path does not exist.
+        """                
         
 
         if len(self.converter_queue) == 0:
@@ -58,43 +61,25 @@ class VideoExtract:
 
         else:
             for file_q_c, file_q in enumerate(self.converter_queue):
-                clip = VideoFileClip(file_q)
-                clip = clip.subclip(1, 10)
 
-                if os.path.isdir(os.path.abspath(self.folder_to_save)):
+                if os.path.isdir(os.path.abspath(self.save_folder)):
                     try:
-                        os.mkdir(f'{os.path.abspath(self.folder_to_save)}/audioexport')
+                        os.mkdir(f'{os.path.abspath(self.save_folder)}/audioexport')
 
                     except:
                         pass
+
+                else:
+                    raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
-                self.folder_to_save = f'{os.path.abspath(self.folder_to_save)}/audioexport'
+                self.save_folder = f'{os.path.abspath(self.save_folder)}/audioexport'
 
 
-                save_route_clip = os.path.abspath(f'{self.folder_to_save}/{file_q_c}-{self.dataset_name}')
+                save_route_clip = os.path.abspath(f'{self.save_folder}/{file_q_c}-{self.dataset_name}')
 
-                clip.write_videofile(f'{save_route_clip}.mp4') # guardo el video en mp3 independientemente de en qué formato esté inicialmente.
-                ffmpeg_extract_audio(f'{save_route_clip}.mp4', f'{save_route_clip}.{self.to_format}')
+                ffmpeg_extract_audio(file_q, f'{save_route_clip}.{self.to_format}')
 
                 print(f'Successfully saved {file_q_c}-{self.dataset_name}.{self.to_format} inside the folder {save_route_clip}')
 
                 # os.remove(f'{save_route_clip}.mp4') # Elimina finalmente todo. Comentado para el testeo.
-
-                        
-            
-
-
-
-
-        
-
-
-
-
-# convert = VideoExtract() # Instancia del cliente.
-# convert.add_to_queue(['C:/Users/ferdh/Downloads/datatest/TWP-CLAVERO.mp4']) # Añado contenido a la cola.
-
-
-
-# converting = convert.to_audio()
