@@ -83,22 +83,20 @@ class VideoExtract:
 
                 print('')
 
+                loading = True
                 
-                while True:
+                while loading:
                     converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.{self.to_format}'))
                     converter_thread.start()
 
-                    while True:
+                    while loading:
                         for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
-                            print(f'Extract audio... {loading_icon}', end='\r')
+                            print(f'{converter_thread.is_alive()} --- Extract audio from files... {loading_icon}', end='\r')
                             time.sleep(.5)
-                            if converter_thread.isAlive() is False:
-                                break
-
-                    break
+                            if converter_thread.is_alive() is False:
+                                loading = False
 
 
 
-                print(f'Successfully saved {file_q_c}-{self.dataset_name}.{self.to_format} inside the folder {save_route_clip}')
+                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.{self.to_format}\ninside the folder {save_route_clip}')
 
-                # os.remove(f'{save_route_clip}.mp4') # Elimina finalmente todo. Comentado para el testeo.
