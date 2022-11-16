@@ -77,6 +77,8 @@ class VideoExtract:
                 clip.write_videofile(f'{save_route_clip}.mp4') # guardo el video en mp3 independientemente de en qué formato esté inicialmente.
                 ffmpeg_extract_audio(f'{save_route_clip}.mp4', f'{save_route_clip}.{self.to_format}')
 
+                print(f'Successfully saved {file_q_c}-{self.dataset_name}.{self.to_format} inside the folder {save_route_clip}')
+
                 # os.remove(f'{save_route_clip}.mp4') # Elimina finalmente todo. Comentado para el testeo.
 
                         
@@ -92,5 +94,7 @@ class VideoExtract:
 
 # convert = VideoExtract() # Instancia del cliente.
 # convert.add_to_queue(['C:/Users/ferdh/Downloads/datatest/TWP-CLAVERO.mp4']) # Añado contenido a la cola.
+
+
 
 # converting = convert.to_audio()
