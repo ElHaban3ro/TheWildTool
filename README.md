@@ -18,6 +18,24 @@ As already said, TheWildTool covers all these sections to have your space much t
 
 
 
+## Installation
+- Using pypi:
+```bash
+pip install TheWildTool
+```
+
+
+
+or clonning repository (no recommended)
+```bash
+git clone https://github.com/ElHaban3ro/TheWildTool
+```
+and installing the dependencies
+```bash
+py -m pip install -r TheWildTool/requirements.txt
+```
+
+
 ## TheWildTool Origin
 *Comming Soon...*
 
@@ -102,12 +120,16 @@ videos = VideoExtract()
 
 - **...to_audio:**
 	```python
-	ProccessAudio.to_audio()
+	ProccessAudio.to_audio(remove_original = True)
 	```
+	- ***remove_original:*** After conversion, delete the video.
 	*Extract the audio from the video.*
 
 
 ***
+
+[-----> More Examples Here <-----](https://colab.research.google.com/drive/1ewrPBijlpl3YSqPT6Io5Ho8X1W2Kylkx?usp=sharing) Google Colab
+
 ***
 ***
 

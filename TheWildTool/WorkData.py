@@ -60,8 +60,11 @@ class VideoExtract:
 
 
         
-    def to_audio(self):
+    def to_audio(self, remove_original = True):       
         """Extract the audio from the video.
+
+        Args:
+            remove_original (bool, optional): After conversion, delete the video. Defaults to True.
 
         Raises:
             FileNotFoundError: The save path does not exist.
@@ -102,10 +105,14 @@ class VideoExtract:
                             print(f'Extract audio from files... {loading_icon}', end='\r')
                             time.sleep(.5)
                             if converter_thread.is_alive() is False:
+
                                 loading = False
 
 
 
+                if remove_original:
+                    os.remove(file_q)
+                    print(f'\n\n{file_q} fue elimiando.')
                 print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {save_route_clip}')
 
 
