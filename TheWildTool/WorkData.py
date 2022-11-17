@@ -60,7 +60,7 @@ class VideoExtract:
 
 
         
-    def to_audio(self, remove_original = True):       
+    def to_audio(self, remove_original = True):
         """Extract the audio from the video.
 
         Args:
@@ -76,6 +76,10 @@ class VideoExtract:
 
         else:
             for file_q_c, file_q in enumerate(self.converter_queue):
+                file_format = os.path.basename(file_q).split('.')[-1]
+                new_file = f'{os.path.dirname(file_q)}/{file_q_c}.{file_format}'
+                os.rename(file_q, new_file)
+                file_q = new_file
 
                 if os.path.isdir(os.path.abspath(self.save_route)):
                     try:
