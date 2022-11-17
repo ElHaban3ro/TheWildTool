@@ -125,10 +125,7 @@ class ProccessAudio:
     wav_array = []
 
 
-
-
-
-    
+   
     def add_to_queue(self, route_files: list):
         """Adds a list of files to the queue.
 
@@ -200,6 +197,7 @@ class ProccessAudio:
             grid (bool, optional): Activate or deactivate the grid of your chart. Defaults to False.
             save (bool, optional): Save the graph in its save_route. Defaults to False.
             image_size (tuple, optional): Image size (it is not presented in pixels. It is useful to download this if you don't have a good graphic). Defaults to (20, 10).
+            **kwargs (optional).
 
         Raises:
             IndexError: The last index does not correspond to any of the queue list.
