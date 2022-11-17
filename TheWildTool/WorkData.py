@@ -202,7 +202,7 @@ class ProccessAudio:
 
 
 
-    def graphic(self, index: int, grid = False, save = False):
+    def graphic(self, index: int, grid = False, save = False, image_size = (20, 10)):
 
         if index > len(self.wav_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
@@ -212,7 +212,7 @@ class ProccessAudio:
             time_x = np.arange(0, samples/self.wav_array[index][0], 1/self.wav_array[index][0]) # Esto representa el tiempo. La duración del audio, el eje X.
 
 
-            fig, ax = plt.subplots(figsize = (6, 3))
+            fig, ax = plt.subplots(figsize = image_size)
             fig.patch.set_facecolor('white')
 
             ax.plot(time_x, self.wav_array[index][1], c = 'tab:red') # "Estampamos" los datos.
