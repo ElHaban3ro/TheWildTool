@@ -10,7 +10,7 @@ setup(
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     packages = ['TheWildTool'],
-    version = '1.2.2',
+    version = '1.2.4',
     license = 'MIT',
     description = 'Generation of video datasets (under research) 🤖',
     author = 'ElHaban3ro',
