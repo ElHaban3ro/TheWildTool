@@ -2,3 +2,4 @@ moviepy==1.0.3
 ipython
 scipy
 matplotlib
+yt-dlp

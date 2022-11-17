@@ -118,6 +118,7 @@ class ProccessAudio:
 
     def __init__(self) -> None:
         self.dataset_name = 'MyDataset'
+        self.save_route = './'
 
 
     extract_queue = []
@@ -163,12 +164,7 @@ class ProccessAudio:
 
 
         for file_audio_route in self.extract_queue:
-            
             self.wav_array.append(wavfile.read(file_audio_route))
-
-
-            # fs, audio = wavfile.read(file_audio_route) # Read wav file
-            # self.wav_array.append([fs, audio])
         
 
 
@@ -202,7 +198,20 @@ class ProccessAudio:
 
 
 
-    def view(self, index: int, grid = False, save = False, image_size = (20, 10)):
+    def view(self, index: int, grid = False, save = False, image_size = (20, 10), **kwargs):
+        """It generates a graph that represents the decibels of your audio over time.
+
+        Args:
+            index (int): Indicate your element inside the queue!
+            grid (bool, optional): Activate or deactivate the grid of your chart. Defaults to False.
+            save (bool, optional): Save the graph in its save_route. Defaults to False.
+            image_size (tuple, optional): Image size (it is not presented in pixels. It is useful to download this if you don't have a good graphic). Defaults to (20, 10).
+
+        Raises:
+            IndexError: The last index does not correspond to any of the queue list.
+        """        
+
+        
 
         if index > len(self.wav_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
@@ -215,7 +224,7 @@ class ProccessAudio:
             fig, ax = plt.subplots(figsize = image_size)
             fig.patch.set_facecolor('white')
 
-            ax.plot(time_x, self.wav_array[index][1], c = 'tab:red') # "Estampamos" los datos.
+            ax.plot(time_x, self.wav_array[index][1], c = 'tab:blue') # "Estampamos" los datos.
             ax.set_title(f'View at {self.dataset_name}')
             ax.set_xlabel('Seconds [s]')
             ax.set_ylabel('dB Amplitud [dB]')
@@ -224,3 +233,7 @@ class ProccessAudio:
 
             fig.tight_layout()
             plt.show()
+
+            if save: # If the user wants to save
+                if 'format' in kwargs: # If the user give the format
+                    plt.savefig(f'{os.path.abspath(self.save_route)}/{self.dataset_name}')
