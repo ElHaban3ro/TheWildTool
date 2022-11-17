@@ -25,7 +25,7 @@ class VideoExtract:
 
     def __init__(self) -> None:
         self.dataset_name = 'MyAudioDataset'
-        self.save_folder = './'
+        self.save_route = './'
 
     def __str__(self) -> str:
         return f'Converting Format: wav'
@@ -77,9 +77,9 @@ class VideoExtract:
         else:
             for file_q_c, file_q in enumerate(self.converter_queue):
 
-                if os.path.isdir(os.path.abspath(self.save_folder)):
+                if os.path.isdir(os.path.abspath(self.save_route)):
                     try:
-                        os.mkdir(f'{os.path.abspath(self.save_folder)}/audioexport')
+                        os.mkdir(f'{os.path.abspath(self.save_route)}/audioexport')
 
                     except:
                         pass
@@ -88,10 +88,8 @@ class VideoExtract:
                     raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
-                self.save_folder = f'{os.path.abspath(self.save_folder)}/audioexport'
 
-
-                save_route_clip = os.path.abspath(f'{self.save_folder}/{file_q_c}-{self.dataset_name}')
+                save_route_clip = os.path.abspath(f'{self.save_route}/audioexport/{file_q_c}-{self.dataset_name}')
 
 
                 loading = True
