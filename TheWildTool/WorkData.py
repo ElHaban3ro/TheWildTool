@@ -82,13 +82,13 @@ class VideoExtract:
         else:
             for file_q_c, file_q in enumerate(self.converter_queue):
                 file_format = os.path.basename(file_q).split('.')[-1]
-                new_file = f'{os.path.dirname(file_q)}/{file_q_c}.{file_format}'
+                new_file = f'{os.path.dirname(os.path.abspath(file_q))}/{file_q_c}.{file_format}'
                 os.rename(file_q, new_file)
                 file_q = new_file
 
                 if os.path.isdir(os.path.abspath(self.save_route)):
                     try:
-                        os.mkdir(f'{os.path.abspath(self.save_route)}/audioexport')
+                        os.mkdir(f'{os.path.abspath(self.save_route)}/{self.dataset_name}audioexport')
 
                     except:
                         pass
@@ -97,10 +97,10 @@ class VideoExtract:
                     raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
-                r = f'{os.path.abspath(self.save_route)}/audioexport'
+                r = f'{os.path.abspath(self.save_route)}/{self.dataset_name}audioexport'
 
 
-                save_route_clip = os.path.abspath(f'{self.save_route}/audioexport/{file_q_c}-{self.dataset_name}')
+                save_route_clip = os.path.abspath(f'{self.save_route}/{self.dataset_name}audioexport/{file_q_c}-{self.dataset_name}')
 
                 loading = True
                 print(file_q)
