@@ -177,7 +177,7 @@ class ProccessAudio:
 
     # Con lo anterior, tenemos los audios wav cargados. De aquí para abajo, comenzaremos ahora sí a trabajar con ellos.
 
-    def show(self, index: int):
+    def listen(self, index: int):
         """Show audio in a notebook.
 
         Args:
@@ -202,7 +202,7 @@ class ProccessAudio:
 
 
 
-    def graphic(self, index: int, grid = False, save = False, image_size = (20, 10)):
+    def view(self, index: int, grid = False, save = False, image_size = (20, 10)):
 
         if index > len(self.wav_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
