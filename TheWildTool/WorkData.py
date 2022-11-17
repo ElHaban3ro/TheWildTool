@@ -147,22 +147,28 @@ class ProccessAudio:
                 if os.path.isfile(os.path.abspath(route)):
                     if os.path.abspath(route).split('.')[-1] == 'wav': # is wav file.
                         self.extract_queue.append(route)
-                    
-            print(f'\nAdd to queue success. Total queue {len(self.extract_queue)}')
+                        
+            if len(self.extract_queue) == 0:
+                print('WARNING: The queue is empty. You can add audios to the queue using ProccessAudio.add_to_queue. REMEMBER: Only support wav files.')
+
+            else:
+                print(f'\nAdd to queue success. Total queue {len(self.extract_queue)}')
+
         else:
             raise ValueError('(ErrorType) Only Support List.')
 
 
 
 
-        if len(self.extract_queue) == 0:
-            raise ValueError('(QueueEmpty) The queue is empty. You can add audios to the queue using ProccessAudio.add_to_queue')
-
 
 
         for file_audio_route in self.extract_queue:
-            fs, read_audio_file = wavfile.read(file_audio_route) # Read wav file
-            self.wav_array.append((read_audio_file, fs))
+            
+            self.wav_array.append(wavfile.read(file_audio_route))
+
+
+            # fs, audio = wavfile.read(file_audio_route) # Read wav file
+            # self.wav_array.append([fs, audio])
         
 
 
@@ -191,7 +197,7 @@ class ProccessAudio:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
 
         else:
-            return IPython.display.Audio(self.wav_array[index][0].T, rate=self.wav_array[index][1])
+            return IPython.display.Audio(self.wav_array[index][1].T, rate=self.wav_array[index][0])
 
 
 
@@ -202,16 +208,14 @@ class ProccessAudio:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
 
         else:
-            samples = len(self.wav_array[index][0].T) # Muestras. (Un array. Esto vendría a representar el eje Y)
-            print(samples)
-            time_x = np.arange(0, samples/self.wav_array[index][1], 1/self.wav_array[index][1]) # Esto representa el tiempo. La duración del audio, el eje X.
-            print(time_x)
+            samples = len(self.wav_array[index][1]) # Muestras. (Un array. Esto vendría a representar el eje Y)
+            time_x = np.arange(0, samples/self.wav_array[index][0], 1/self.wav_array[index][0]) # Esto representa el tiempo. La duración del audio, el eje X.
 
 
-            fig, ax = plt.subplots(figsize = (12, 6))
+            fig, ax = plt.subplots(figsize = (6, 3))
             fig.patch.set_facecolor('white')
 
-            ax.plot(time_x, self.wav_array[index][0].T, c = 'tab:red') # "Estampamos" los datos.
+            ax.plot(time_x, self.wav_array[index][1], c = 'tab:red') # "Estampamos" los datos.
             ax.set_title(f'View at {self.dataset_name}')
             ax.set_xlabel('Seconds [s]')
             ax.set_ylabel('dB Amplitud [dB]')
