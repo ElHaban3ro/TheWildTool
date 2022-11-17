@@ -317,13 +317,11 @@ class GenerateDataset:
                     os.rename(file_route, f'{os.path.dirname(file_route)}/{file_c}.{file_format}')
                     print('TheWildTool: The video dataset has been generated!!!!')
 
-
-
             else:
                 extract = VideoExtract()
                 extract.add_to_queue(files_list_abs)
                 extract.dataset_name = self.dataset_name
 
 
-                extract.to_audio(delete_original = delete_original)
+                extract.to_audio(remove_original = delete_original)
                 print('TheWildTool: The audio dataset has been generated!!!!')
