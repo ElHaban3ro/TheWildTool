@@ -104,11 +104,9 @@ class VideoExtract:
                 video_clip_audio = video_clip.audio
 
                 while loading:
+                    converter_thread = Thread(target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav'))
+                    converter_thread.start()
                     
-                    with open(f'{save_route_clip}.wav', 'rb+') as fa:
-                        converter_thread = Thread(target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav'))
-                        converter_thread.start()
-
                     while loading:
                         for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
                             print(f'Extract audio from files... {loading_icon}', end='\r')
@@ -122,7 +120,7 @@ class VideoExtract:
                 if remove_original:
                     os.remove(file_q)
                     print(f'\n\n{file_q} fue elimiando.')
-                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {save_route_clip}')
+                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {os.path.dirname("f{save_route_clip}.wav")}')
 
 
 
