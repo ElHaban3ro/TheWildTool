@@ -230,7 +230,8 @@ class ProccessAudio:
 
             if save: # If the user wants to save
                 if 'format' in kwargs: # If the user give the format
-                    plt.savefig(f'{os.path.abspath(self.save_route)}/{index}{self.dataset_name}-Figure.{kwargs["format"]}')
+                    fig.savefig(f'{os.path.abspath(self.save_route)}/{index}-{self.dataset_name}-Figure.{kwargs["format"]}')
+                    print('TheWildTool: Image saved.')
 
                 else:
                     raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
