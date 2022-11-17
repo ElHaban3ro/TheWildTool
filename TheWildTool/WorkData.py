@@ -88,12 +88,15 @@ class VideoExtract:
                     raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
+                r = f'{os.path.abspath(self.save_route)}/audioexport'
+
 
                 save_route_clip = os.path.abspath(f'{self.save_route}/audioexport/{file_q_c}-{self.dataset_name}')
 
 
                 loading = True
-                
+                print(file_q)
+
                 while loading:
                     converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.wav'))
                     converter_thread.start()
