@@ -11,6 +11,11 @@ from scipy.io import wavfile
 import matplotlib.pyplot as plt
 import numpy as np
 
+from yt_dlp import YoutubeDL
+
+
+
+
 class VideoExtract:
     """Extract audio from video file.
 
@@ -247,3 +252,78 @@ class ProccessAudio:
 
                 else:
                     raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
+
+
+
+
+
+
+
+class GenerateDataset:
+    """Generates datasets based on multimedia content from the Internet. 
+    """    
+
+    def __init__(self) -> None:
+        self.format_yt_dlp = 'worst[height>144]' # Config of YT-DLP
+        self.save_route = './'
+        self.dataset_name = 'MyDataset'
+
+
+    def youtube(self, playlist: str, delete_original = True, video_mode = False):
+        """Generate a dataset based on a youtube playlist.
+
+        Args:
+            playlist (str): Playlist URL.
+            delete_original (bool, optional): If video mode is false, the video file are removed. Defaults to True.
+            video_mode (bool, optional): It will generate a video dataset. It maximizes the "medium" video quality, where it is not so low, but enough to train a model (maybe even very high). 3 hours of video usually weighs 150mb's. Defaults to False.
+
+        Raises:
+            ValueError: The url passed is wrong (it is not a playlist).
+        """        
+
+        if 'playlist?list=' not in playlist:
+            raise ValueError('(URLPlaylist) be sure to pass the correct url of your YOUTUBE playlist.')
+
+        else:
+            save_folder = f'{os.path.abspath(self.save_route)}/{self.dataset_name}/'
+            
+            try:
+                os.mkdir(save_folder)
+            except:
+                pass
+
+
+            # Config dict.
+            options = {
+                'format' : self.format_yt_dlp,
+                'outtmpl': f'{os.path.abspath(self.save_route)}/{self.dataset_name}/%(title)s.mp4',
+                'ignoreerrors': True # Sometimes this is useful for when the playlist has premiers, but if it is for debugging leave it activated.
+            }
+            
+            with YoutubeDL(options) as ytdl:
+                ytdl.download(playlist)
+
+
+            files_list = os.listdir(save_folder)
+            files_list_abs = []
+
+            for file_name in files_list:
+                files_list_abs.append(f'{save_folder}/{file_name}') # List of files with absolute url.
+
+
+            if video_mode:
+                for file_c, file_route in enumerate(files_list_abs):
+                    file_format = os.path.basename(file_route).split('.')[-1]
+                    os.rename(file_route, f'{os.path.dirname(file_route)}/{file_c}.{file_format}')
+                    print('TheWildTool: The video dataset has been generated!!!!')
+
+
+
+            else:
+                extract = VideoExtract()
+                extract.add_to_queue(files_list_abs)
+                extract.dataset_name = self.dataset_name
+
+
+                extract.to_audio(delete_original = delete_original)
+                print('TheWildTool: The audio dataset has been generated!!!!')
