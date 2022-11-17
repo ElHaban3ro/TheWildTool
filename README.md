@@ -72,7 +72,7 @@ audiop = ProdcessAudio()
 
 
 	*It generates a graph that represents the decibels of your audio over time.*
-	<iframe src="https://drive.google.com/file/d/1POjp6gVCOF87ZmK4iQ-L6mDmW_tKIzQN/preview" width="640" height="133" allow="autoplay"></iframe>
+![AudioProccess Example](https://i.imgur.com/Z9LgW2p.png)
 
 
 ## **VideoExtract:**
@@ -105,8 +105,6 @@ videos = VideoExtract()
 	ProccessAudio.to_audio()
 	```
 	*Extract the audio from the video.*
-
-
 
 
 ***
