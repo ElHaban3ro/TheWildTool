@@ -8,6 +8,8 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import IPython
 from scipy.io import wavfile
 
+import matplotlib.pyplot as plt
+import numpy as np
 
 class VideoExtract:
     """Extract audio from video file.
@@ -115,11 +117,11 @@ class ProccessAudio:
 
 
     def __init__(self) -> None:
-        pass
+        self.dataset_name = 'MyDataset'
 
 
     extract_queue = []
-    wav_audios_objects = []
+    wav_array = []
 
 
 
@@ -160,7 +162,7 @@ class ProccessAudio:
 
         for file_audio_route in self.extract_queue:
             fs, read_audio_file = wavfile.read(file_audio_route) # Read wav file
-            self.wav_audios_objects.append((read_audio_file, fs))
+            self.wav_array.append((read_audio_file, fs))
         
 
 
@@ -185,10 +187,36 @@ class ProccessAudio:
 
 
 
-        if index > len(self.wav_audios_objects) - 1 or index < 0:
-            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_audios_objects)} ')
+        if index > len(self.wav_array) - 1 or index < 0:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
 
         else:
-            return IPython.display.Audio(self.wav_audios_objects[index][0].T, rate=self.wav_audios_objects[index][1])
+            return IPython.display.Audio(self.wav_array[index][0].T, rate=self.wav_array[index][1])
 
 
+
+
+    def graphic(self, index: int, grid = False, save = False):
+
+        if index > len(self.wav_array) - 1 or index < 0:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
+
+        else:
+            samples = len(self.wav_array[index][0].T) # Muestras. (Un array. Esto vendría a representar el eje Y)
+            print(samples)
+            time_x = np.arange(0, samples/self.wav_array[index][1], 1/self.wav_array[index][1]) # Esto representa el tiempo. La duración del audio, el eje X.
+            print(time_x)
+
+
+            fig, ax = plt.subplots(figsize = (12, 6))
+            fig.patch.set_facecolor('white')
+
+            ax.plot(time_x, self.wav_array[index][0].T, c = 'tab:red') # "Estampamos" los datos.
+            ax.set_title(f'View at {self.dataset_name}')
+            ax.set_xlabel('Seconds [s]')
+            ax.set_ylabel('dB Amplitud [dB]')
+
+            ax.grid(grid)
+
+            fig.tight_layout()
+            plt.show()
