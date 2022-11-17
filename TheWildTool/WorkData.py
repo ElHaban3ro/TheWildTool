@@ -102,8 +102,9 @@ class VideoExtract:
                 print(file_q)
 
                 while loading:
-                    converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, f'{save_route_clip}.wav'))
-                    converter_thread.start()
+                    with open(f'{save_route_clip}.wav', 'rb+') as fa:
+                        converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, fa))
+                        converter_thread.start()
 
                     while loading:
                         for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
