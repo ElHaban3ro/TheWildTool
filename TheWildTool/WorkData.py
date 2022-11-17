@@ -170,9 +170,7 @@ class ProccessAudio:
 
 
 
-
     # Con lo anterior, tenemos los audios wav cargados. De aquí para abajo, comenzaremos ahora sí a trabajar con ellos.
-
     def listen(self, index: int):
         """Show audio in a notebook.
 
@@ -186,12 +184,8 @@ class ProccessAudio:
             IPython.display.Audio: The audio file to show. Use print.
         """            
 
-
-
-
         if index > len(self.wav_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
-
         else:
             return IPython.display.Audio(self.wav_array[index][1].T, rate=self.wav_array[index][0])
 
@@ -236,4 +230,7 @@ class ProccessAudio:
 
             if save: # If the user wants to save
                 if 'format' in kwargs: # If the user give the format
-                    plt.savefig(f'{os.path.abspath(self.save_route)}/{self.dataset_name}')
+                    plt.savefig(f'{os.path.abspath(self.save_route)}/{index}{self.dataset_name}-Figure.{kwargs["format"]}')
+
+                else:
+                    raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
