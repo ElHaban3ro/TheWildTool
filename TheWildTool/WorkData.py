@@ -97,13 +97,16 @@ class VideoExtract:
 
                 save_route_clip = os.path.abspath(f'{self.save_route}/audioexport/{file_q_c}-{self.dataset_name}')
 
-
                 loading = True
                 print(file_q)
 
+                video_clip = VideoFileClip(file_q)
+                video_clip_audio = video_clip.audio
+
                 while loading:
+                    
                     with open(f'{save_route_clip}.wav', 'rb+') as fa:
-                        converter_thread = Thread(target = lambda: ffmpeg_extract_audio(file_q, fa))
+                        converter_thread = Thread(target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav'))
                         converter_thread.start()
 
                     while loading:
