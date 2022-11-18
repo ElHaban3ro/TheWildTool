@@ -99,10 +99,9 @@ class VideoExtract:
                     raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
-                r = f'{os.path.abspath(self.save_route)}/{self.dataset_name}audioexport'
 
 
-                save_route_clip = os.path.abspath(f'{base_route}/{file_q_c}-{self.dataset_name}')
+                save_route_clip = os.path.abspath(f'{base_route}/{self.dataset_name}-AudioExport/{file_q_c}-{self.dataset_name}')
 
                 loading = True
                 print(file_q)
