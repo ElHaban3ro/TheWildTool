@@ -96,15 +96,25 @@ class VideoExtract:
 
 
                 save_route_clip = os.path.abspath(f'{base_route}/{self.dataset_name}-AudioExport/{file_q_c}-{self.dataset_name}')
+                try:
+                    os.mkdir(f'{base_route}/{self.dataset_name}-AudioExport/')
+
+                except:
+                    pass
+
 
                 loading = True
-                print(file_q)
 
-                video_clip = VideoFileClip(file_q)
+                video_clip = VideoFileClip(os.path.normpath(file_q))
                 video_clip_audio = video_clip.audio
 
-                print(int(f'{audio_fps}000'))
-                target = video_clip_audio.write_audiofile(f'{save_route_clip}.wav', fps = int(f'{audio_fps}000'))
+
+                file_destin = os.path.normpath(f'{save_route_clip}.wav')
+
+
+                print(os.path.normpath(file_q))
+                print(file_destin)
+                target = video_clip_audio.write_audiofile(file_destin, fps = int(f'{audio_fps}000'))
 
                 if remove_original:
                     os.remove(file_q)
@@ -302,7 +312,6 @@ class GenerateDataset:
                 extract = VideoExtract()
                 extract.add_to_queue(files_list_abs)
                 extract.dataset_name = self.dataset_name
-
-
-                extract.to_audio(remove_original = delete_original, audio_fps=self.audio_quality)
+                
+                extract.to_audio(remove_original = delete_original, audio_fps = self.audio_quality)
                 print('TheWildTool: The audio dataset has been generated!!!!')
