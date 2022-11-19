@@ -65,7 +65,7 @@ class VideoExtract:
 
 
         
-    def to_audio(self, remove_original = True):
+    def to_audio(self, remove_original = True, audio_fps = 16):
         """Extract the audio from the video.
 
         Args:
@@ -109,19 +109,7 @@ class VideoExtract:
                 video_clip = VideoFileClip(file_q)
                 video_clip_audio = video_clip.audio
 
-                while loading:
-                    converter_thread = Thread(target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav'))
-                    converter_thread.start()
-                    
-                    while loading:
-                        for loading_icon in [' - ', ' \ ', ' | ', ' / ']:
-                            print(f'Extract audio from files... {loading_icon}', end='\r')
-                            time.sleep(.5)
-                            if converter_thread.is_alive() is False:
-
-                                loading = False
-
-
+                target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav', fps = int(f'{audio_fps}000'))
 
                 if remove_original:
                     os.remove(file_q)
@@ -253,10 +241,6 @@ class ProccessAudio:
 
                 else:
                     raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
-
-
-
-
 
 
 

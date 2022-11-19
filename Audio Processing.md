@@ -34,4 +34,8 @@ Técnicas para el procesamiento de audio:
 
 2. Obtener el espectograma del audio. (Con la transformada de Fourier o con la (idealmente) Transformada rápida de Fourirer.)
 
-3. Coeficientes de Mel: Con esto, es posible extraer caracteristicas por medio del espectrograma. Este método hace un fuerte enfasis en las frecuencias que suelen tener las voces.
+3. Coeficientes de Mel: Con esto, es posible extraer caracteristicas por medio del espectrograma. Este método hace un fuerte enfasis en las frecuencias que suelen tener las voces. Una forma útil (comentada en https://learn.microsoft.com/es-es/training/modules/intro-audio-classification-tensorflow/) dice que transformando los audios en imagenes podemos analizarlas con visión por computadora. Un problema que quizás puede surgir es si queremos analizarlo en tiempo real.
+
+
+## Datasets
+- https://urbansounddataset.weebly.com/urbansound8k.html
