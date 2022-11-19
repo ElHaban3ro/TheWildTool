@@ -103,7 +103,6 @@ class VideoExtract:
                     pass
 
 
-                loading = True
 
                 video_clip = VideoFileClip(os.path.normpath(file_q))
                 video_clip_audio = video_clip.audio
@@ -115,6 +114,7 @@ class VideoExtract:
                 print(os.path.normpath(file_q))
                 print(file_destin)
                 target = video_clip_audio.write_audiofile(file_destin, fps = int(f'{audio_fps}000'))
+                video_clip.close()
 
                 if remove_original:
                     os.remove(file_q)
