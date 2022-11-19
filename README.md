@@ -212,7 +212,7 @@ ProccessAudio.add_to_queue(route_files:  list)
 
 ```
 
--  ***route_files:*** list of audio file paths. **(.wav)**
+-  ***route_files:*** list of audio file paths. **(.mp3)**
 
 *Add your audios to the list, and then work with them.*
 
@@ -223,12 +223,12 @@ ProccessAudio.add_to_queue(route_files:  list)
 
 ```python
 
-ProccessAudio.to_audio(remove_original  =  True, audio_fps = 6)
+ProccessAudio.to_audio(remove_original  =  True, audio_bitrate = '10k')
 
 ```
 
 -  ***remove_original:(boolm optional)*** After conversion, delete the video.
-- ***audio_fps (int, optional):*** Frequency at which you want to save the audio. Remember: higher frequency, higher quality, but therefore, higher weight.
+- ***audio_bitrate (str, optional):*** String of the amount of bitrate your audio has. The string should be something like "50k", "777k" or "5k", but keep in mind that more Bitrate represents more weight in the file (but more quality).
 
 *Extract the audio from the video.*
 

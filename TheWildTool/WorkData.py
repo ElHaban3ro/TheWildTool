@@ -6,7 +6,7 @@ from threading import Thread
 from moviepy.editor import VideoFileClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import IPython
-from scipy.io import wavfile
+from scipy.io import mp3file
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -33,7 +33,7 @@ class VideoExtract:
         self.save_route = './'
 
     def __str__(self) -> str:
-        return f'Converting Format: wav'
+        return f'Converting Format: mp3'
 
 
 
@@ -52,7 +52,7 @@ class VideoExtract:
         if type(videos_route).__name__ == 'list':
             for route in videos_route:
                 if os.path.isfile(os.path.abspath(route)):
-                    if os.path.abspath(route).split('.')[-1] in formats: # is wav file.
+                    if os.path.abspath(route).split('.')[-1] in formats: # is mp3 file.
                         self.converter_queue.append(os.path.abspath(route))
 
 
@@ -65,12 +65,13 @@ class VideoExtract:
 
 
         
-    def to_audio(self, remove_original = True, audio_fps = 4):
+    def to_audio(self, remove_original = True, audio_bitrate = '20k'):
         """Extract the audio from the video.
 
         Args:
             remove_original (bool, optional): After conversion, delete the video. Defaults to True.
             audio_fps (int, optional): Frequency at which you want to save the audio. Remember: higher frequency, higher quality, but therefore, higher weight.
+            audio_fps (str, optional): String of the amount of bitrate your audio has. The string should be something like "50k", "777k" or "5k", but keep in mind that more Bitrate represents more weight in the file (but more quality).
 
         Raises:
             FileNotFoundError: The save path does not exist.
@@ -91,10 +92,6 @@ class VideoExtract:
 
 
 
-                        
-
-
-
                 save_route_clip = os.path.abspath(f'{base_route}/{self.dataset_name}-AudioExport/{file_q_c}-{self.dataset_name}')
                 try:
                     os.mkdir(f'{base_route}/{self.dataset_name}-AudioExport/')
@@ -108,18 +105,18 @@ class VideoExtract:
                 video_clip_audio = video_clip.audio
 
 
-                file_destin = os.path.normpath(f'{save_route_clip}.wav')
+                file_destin = os.path.normpath(f'{save_route_clip}.mp3')
 
 
                 print(os.path.normpath(file_q))
                 print(file_destin)
-                target = video_clip_audio.write_audiofile(file_destin, fps = int(f'{audio_fps}000'), bitrate = '10k')
+                target = video_clip_audio.write_audiofile(file_destin, bitrate = audio_bitrate, ffmpeg_params = ['-ac', '2'])
                 video_clip.close()
 
                 if remove_original:
                     os.remove(file_q)
                     print(f'\n\n{file_q} fue elimiando.')
-                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {os.path.dirname(f"{save_route_clip}.wav")}')
+                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.mp3\ninside the folder {os.path.dirname(f"{save_route_clip}.mp3")}')
 
 
 
@@ -135,7 +132,7 @@ class ProccessAudio:
 
 
     extract_queue = []
-    wav_array = []
+    mp3_array = []
 
 
    
@@ -156,11 +153,11 @@ class ProccessAudio:
             for route in route_files:
 
                 if os.path.isfile(os.path.abspath(route)):
-                    if os.path.abspath(route).split('.')[-1] == 'wav': # is wav file.
+                    if os.path.abspath(route).split('.')[-1] == 'mp3': # is mp3 file.
                         self.extract_queue.append(route)
                         
             if len(self.extract_queue) == 0:
-                print('WARNING: The queue is empty. You can add audios to the queue using ProccessAudio.add_to_queue. REMEMBER: Only support wav files.')
+                print('WARNING: The queue is empty. You can add audios to the queue using ProccessAudio.add_to_queue. REMEMBER: Only support mp3 files.')
 
             else:
                 print(f'\nAdd to queue success. Total queue {len(self.extract_queue)}')
@@ -174,13 +171,13 @@ class ProccessAudio:
 
 
         for file_audio_route in self.extract_queue:
-            self.wav_array.append(wavfile.read(file_audio_route))
+            self.mp3_array.append(mp3file.read(file_audio_route))
         
 
 
 
 
-    # Con lo anterior, tenemos los audios wav cargados. De aquí para abajo, comenzaremos ahora sí a trabajar con ellos.
+    # Con lo anterior, tenemos los audios mp3 cargados. De aquí para abajo, comenzaremos ahora sí a trabajar con ellos.
     def listen(self, index: int):
         """Show audio in a notebook.
 
@@ -194,10 +191,10 @@ class ProccessAudio:
             IPython.display.Audio: The audio file to show. Use print.
         """            
 
-        if index > len(self.wav_array) - 1 or index < 0:
-            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
+        if index > len(self.mp3_array) - 1 or index < 0:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
         else:
-            return IPython.display.Audio(self.wav_array[index][1].T, rate=self.wav_array[index][0])
+            return IPython.display.Audio(self.mp3_array[index][1].T, rate=self.mp3_array[index][0])
 
 
 
@@ -218,18 +215,18 @@ class ProccessAudio:
 
         
 
-        if index > len(self.wav_array) - 1 or index < 0:
-            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of wav files to read is {len(self.wav_array)} ')
+        if index > len(self.mp3_array) - 1 or index < 0:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
         else:
-            samples = len(self.wav_array[index][1]) # Muestras. (Un array. Esto vendría a representar el eje Y)
-            time_x = np.arange(0, samples/self.wav_array[index][0], 1/self.wav_array[index][0]) # Esto representa el tiempo. La duración del audio, el eje X.
+            samples = len(self.mp3_array[index][1]) # Muestras. (Un array. Esto vendría a representar el eje Y)
+            time_x = np.arange(0, samples/self.mp3_array[index][0], 1/self.mp3_array[index][0]) # Esto representa el tiempo. La duración del audio, el eje X.
 
 
             fig, ax = plt.subplots(figsize = image_size)
             fig.patch.set_facecolor('white')
 
-            ax.plot(time_x, self.wav_array[index][1], c = 'tab:blue') # "Estampamos" los datos.
+            ax.plot(time_x, self.mp3_array[index][1], c = 'tab:blue') # "Estampamos" los datos.
             ax.set_title(f'View at {self.dataset_name}')
             ax.set_xlabel('Seconds [s]')
             ax.set_ylabel('dB Amplitud [dB]')
@@ -257,7 +254,7 @@ class GenerateDataset:
         self.format_yt_dlp = 'worst[height>144]' # Config of YT-DLP
         self.save_route = './'
         self.dataset_name = 'MyDataset'
-        self.audio_quality = 4
+        self.audio_bitrate = '20k'
 
 
     def youtube(self, playlist: str, delete_original = True, video_mode = False):
@@ -313,5 +310,5 @@ class GenerateDataset:
                 extract.add_to_queue(files_list_abs)
                 extract.dataset_name = self.dataset_name
                 
-                extract.to_audio(remove_original = delete_original, audio_fps = self.audio_quality)
+                extract.to_audio(remove_original = delete_original, audio_bitrate = self.audio_bitrate)
                 print('TheWildTool: The audio dataset has been generated!!!!')
