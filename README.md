@@ -169,6 +169,11 @@ ProccessAudio.view(index:  int,  grid  =  False,  save  =  False,  image_size  =
   
   
 
+
+
+
+
+
 ##  **VideoExtract:**
 
 *Extract audio from video files.*
@@ -218,11 +223,12 @@ ProccessAudio.add_to_queue(route_files:  list)
 
 ```python
 
-ProccessAudio.to_audio(remove_original  =  True)
+ProccessAudio.to_audio(remove_original  =  True, audio_fps = 6)
 
 ```
 
--  ***remove_original:*** After conversion, delete the video.
+-  ***remove_original:(boolm optional)*** After conversion, delete the video.
+- ***audio_fps (int, optional):*** Frequency at which you want to save the audio. Remember: higher frequency, higher quality, but therefore, higher weight.
 
 *Extract the audio from the video.*
 

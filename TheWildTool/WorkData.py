@@ -65,11 +65,12 @@ class VideoExtract:
 
 
         
-    def to_audio(self, remove_original = True, audio_fps = 16):
+    def to_audio(self, remove_original = True, audio_fps = 6):
         """Extract the audio from the video.
 
         Args:
             remove_original (bool, optional): After conversion, delete the video. Defaults to True.
+            audio_fps (int, optional): Frequency at which you want to save the audio. Remember: higher frequency, higher quality, but therefore, higher weight.
 
         Raises:
             FileNotFoundError: The save path does not exist.
@@ -88,15 +89,8 @@ class VideoExtract:
                 os.rename(file_q, new_file)
                 file_q = new_file
 
-                if os.path.isdir(os.path.abspath(self.save_route)):
-                    try:
-                        os.mkdir(f'{base_route}/{self.dataset_name}-AudioExport/')
 
-                    except:
-                        pass
 
-                else:
-                    raise FileNotFoundError('(SaveRouteError) Please change the save path to a correct one, or delete your confuguration so that it assigns itself.')
                         
 
 
@@ -109,12 +103,13 @@ class VideoExtract:
                 video_clip = VideoFileClip(file_q)
                 video_clip_audio = video_clip.audio
 
-                target = lambda: video_clip_audio.write_audiofile(f'{save_route_clip}.wav', fps = int(f'{audio_fps}000'))
+                print(int(f'{audio_fps}000'))
+                target = video_clip_audio.write_audiofile(f'{save_route_clip}.wav', fps = int(f'{audio_fps}000'))
 
                 if remove_original:
                     os.remove(file_q)
                     print(f'\n\n{file_q} fue elimiando.')
-                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {os.path.dirname("f{save_route_clip}.wav")}')
+                print(f'\n\nSuccessfully saved {file_q_c}-{self.dataset_name}.wav\ninside the folder {os.path.dirname(f"{save_route_clip}.wav")}')
 
 
 
@@ -252,6 +247,7 @@ class GenerateDataset:
         self.format_yt_dlp = 'worst[height>144]' # Config of YT-DLP
         self.save_route = './'
         self.dataset_name = 'MyDataset'
+        self.audio_quality = 6
 
 
     def youtube(self, playlist: str, delete_original = True, video_mode = False):
@@ -308,5 +304,5 @@ class GenerateDataset:
                 extract.dataset_name = self.dataset_name
 
 
-                extract.to_audio(remove_original = delete_original)
+                extract.to_audio(remove_original = delete_original, audio_fps=self.audio_quality)
                 print('TheWildTool: The audio dataset has been generated!!!!')
