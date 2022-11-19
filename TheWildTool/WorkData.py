@@ -65,7 +65,7 @@ class VideoExtract:
 
 
         
-    def to_audio(self, remove_original = True, audio_fps = 6):
+    def to_audio(self, remove_original = True, audio_fps = 4):
         """Extract the audio from the video.
 
         Args:
@@ -113,7 +113,7 @@ class VideoExtract:
 
                 print(os.path.normpath(file_q))
                 print(file_destin)
-                target = video_clip_audio.write_audiofile(file_destin, fps = int(f'{audio_fps}000'))
+                target = video_clip_audio.write_audiofile(file_destin, fps = int(f'{audio_fps}000'), bitrate = '10k')
                 video_clip.close()
 
                 if remove_original:
@@ -257,7 +257,7 @@ class GenerateDataset:
         self.format_yt_dlp = 'worst[height>144]' # Config of YT-DLP
         self.save_route = './'
         self.dataset_name = 'MyDataset'
-        self.audio_quality = 6
+        self.audio_quality = 4
 
 
     def youtube(self, playlist: str, delete_original = True, video_mode = False):
