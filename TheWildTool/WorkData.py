@@ -3,7 +3,7 @@ import time
 
 from threading import Thread
 
-from moviepy.editor import VideoFileClip
+from moviepy.editor import VideoFileClip, AudioFileClip
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import IPython
 
@@ -170,8 +170,9 @@ class ProccessAudio:
 
 
         for file_audio_route in self.extract_queue:
-            a = sf.read(file_audio_route)
-            self.mp3_array.append(sf.read(file_audio_route))
+            audio = AudioFileClip(file_audio_route).to_soundarray()
+            self.mp3_array.append(audio)
+
         
 
 
@@ -194,7 +195,7 @@ class ProccessAudio:
         if index > len(self.mp3_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
         else:
-            return IPython.display.Audio(self.mp3_array[index][0].T, rate=self.mp3_array[index][1])
+            return IPython.display.Audio(self.mp3_array[index], rate=44100)
 
 
 
@@ -219,14 +220,14 @@ class ProccessAudio:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
         else:
-            samples = len(self.mp3_array[index][0]) # Muestras. (Un array. Esto vendría a representar el eje Y)
-            time_x = np.arange(0, samples/self.mp3_array[index][1], 1/self.mp3_array[index][1]) # Esto representa el tiempo. La duración del audio, el eje X.
+            samples = len(self.mp3_array[index]) # Muestras. (Un array. Esto vendría a representar el eje Y)
+            time_x = np.arange(0, samples/44100, 1/44100) # Esto representa el tiempo. La duración del audio, el eje X.
 
 
             fig, ax = plt.subplots(figsize = image_size)
             fig.patch.set_facecolor('white')
 
-            ax.plot(time_x, self.mp3_array[index][0], c = 'tab:blue') # "Estampamos" los datos.
+            ax.plot(time_x, self.mp3_array[index], c = 'tab:blue') # "Estampamos" los datos.
             ax.set_title(f'View at {self.dataset_name}')
             ax.set_xlabel('Seconds [s]')
             ax.set_ylabel('dB Amplitud [dB]')
