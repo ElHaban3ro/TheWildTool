@@ -10,9 +10,9 @@
 
 TheWildTool is a tool developed with the main objective of saving time when working with audio datasets. Either to prepare them (segmentation of your raw audio and more), to get them (get content from the internet like YouTube and more) or to train a model with them (train a model with your dataset created with the above and more).
 
-  
+As already said, TheWildTool covers all these sections to have your space much tidier and cleaner. Only a few libraries are sometimes necessary. 
 
-As already said, TheWildTool covers all these sections to have your space much tidier and cleaner. Only a few libraries are sometimes necessary.
+TheMovieTool makes use of FFMPEG, therefore, for scalability, our repository and package already comes with it. We will update it as we update the tools.
 
   
   

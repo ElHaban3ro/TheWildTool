@@ -3,3 +3,4 @@ ipython
 scipy
 matplotlib
 yt-dlp
+soundfile
