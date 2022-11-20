@@ -26,7 +26,7 @@ from TheWildTool.WorkData import ProccessAudio
 
 v = ProccessAudio()
 v.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3'])
-v.view(0)
+v.see(456)
 
 
 

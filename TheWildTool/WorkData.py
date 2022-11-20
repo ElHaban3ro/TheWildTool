@@ -196,7 +196,7 @@ class ProccessAudio:
 
         try:
             return IPython.display.Audio(self.extract_queue[index])
-        except:
+        except IndexError:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
 
@@ -244,7 +244,7 @@ class ProccessAudio:
                 else:
                     raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
 
-        except:
+        except IndexError:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
 
