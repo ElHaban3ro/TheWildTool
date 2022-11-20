@@ -171,20 +171,6 @@ class ProccessAudio:
 
 
         for file_audio_route in self.extract_queue:
-
-            # with open(r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3', 'rb+') as a:
-            #     print(a.read().decode('utf-16'))
-
-            # read_mp3_file = AudioSegment.from_mp3(file_audio_route)
-            # file_array = np.array(read_mp3_file.get_array_of_samples())
-            # print(file_array.shape)
-
-            # if read_mp3_file.channels == 2:
-            #     file_array.reshape((-1, 2))
-
-            # print(file_array.shape)
-            # self.mp3_array.append()
-
             a = sf.read(file_audio_route)
             self.mp3_array.append(sf.read(file_audio_route))
         
@@ -209,7 +195,7 @@ class ProccessAudio:
         if index > len(self.mp3_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
         else:
-            return IPython.display.Audio(self.mp3_array[index][1].T, rate=self.mp3_array[index][0])
+            return IPython.display.Audio(self.mp3_array[index][0].T, rate=self.mp3_array[index][1])
 
 
 
