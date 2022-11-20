@@ -194,10 +194,10 @@ class ProccessAudio:
             IPython.display.Audio: The audio file to show. Use print.
         """            
 
-        if index > len(self.mp3_array) - 1 or index < 0:
-            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
-        else:
+        try:
             return IPython.display.Audio(self.extract_queue[index])
+        except:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
 
 
@@ -218,10 +218,7 @@ class ProccessAudio:
 
         
 
-        if index > len(self.mp3_array) - 1 or index < 0:
-            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
-
-        else:
+        try:
             samples = len(self.mp3_array[index]) # Muestras. (Un array. Esto vendría a representar el eje Y)
             time_x = np.arange(0, samples/44100, 1/44100) # Esto representa el tiempo. La duración del audio, el eje X.
 
@@ -246,6 +243,9 @@ class ProccessAudio:
 
                 else:
                     raise ValueError('(FormatError) You do not give the saving format. The value is given with kw format="myformat"')
+
+        except:
+            raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
 
 
