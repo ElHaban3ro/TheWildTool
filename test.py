@@ -22,11 +22,11 @@
 
 
 
-from TheWildTool.WorkData import ProccessAudio
+# from TheWildTool.WorkData import ProccessAudio
 
-v = ProccessAudio()
-v.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3'])
-v.see(456)
+# v = ProccessAudio()
+# v.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3'])
+# v.see(456)
 
 
 
@@ -34,3 +34,9 @@ v.see(456)
 # import os
 # a =os.path.normpath(r'C:\Users\ferdh\Downloads\datatest\MyDataset/0.mp4')
 # print(a)}
+
+
+
+
+with open('./template.aseg', 'r+') as f:
+    print(f.readlines())

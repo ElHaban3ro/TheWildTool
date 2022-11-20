@@ -1,0 +1,27 @@
+# Header
+[DATASET NAME][list, of, persons, that, is, in, the, audio][time_type: h:m:s, m:s, s]
+
+# Example!
+[TheWildProject Dataset][Jordi, Nacho, Other][h:m:s]
+
+
+
+# Body
+# Time with time_type format and the person name.
+
+
+# Example!
+- Jordi
+- 00:00:13 -> 00:00:30
+
+
+- Jordi
+- 00:00:45 -> 00:01:03
+
+
+- Nacho
+- 00:01:05 -> 01:09:25
+
+
+- Other
+- 01:09:27 -> 01:08:56
