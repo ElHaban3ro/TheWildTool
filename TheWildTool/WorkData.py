@@ -170,8 +170,10 @@ class ProccessAudio:
 
 
         for file_audio_route in self.extract_queue:
-            audio = AudioFileClip(file_audio_route).to_soundarray()
-            self.mp3_array.append(audio)
+            audio = AudioFileClip(file_audio_route)
+            a_array = audio.to_soundarray()
+
+            self.mp3_array.append(a_array)
 
         
 
@@ -195,12 +197,12 @@ class ProccessAudio:
         if index > len(self.mp3_array) - 1 or index < 0:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
         else:
-            return IPython.display.Audio(self.mp3_array[index], rate=44100)
+            return IPython.display.Audio(self.extract_queue[index])
 
 
 
 
-    def view(self, index: int, grid = False, save = False, image_size = (20, 10), **kwargs):
+    def see(self, index: int, grid = False, save = False, image_size = (20, 10), **kwargs):
         """It generates a graph that represents the decibels of your audio over time.
 
         Args:

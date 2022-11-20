@@ -141,11 +141,11 @@ ProccessAudio.listen(index:  int)
   
   
 
--  **...view:**
+-  **...see:**
 
 ```python
 
-ProccessAudio.view(index:  int,  grid  =  False,  save  =  False,  image_size  =  (20,  10),  **kwargs)
+ProccessAudio.see(index:  int,  grid  =  False,  save  =  False,  image_size  =  (20,  10),  **kwargs)
 
 ```
 
