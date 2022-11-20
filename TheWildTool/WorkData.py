@@ -8,7 +8,6 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import IPython
 
 import soundfile as sf
-from pydub import AudioSegment
 
 import matplotlib.pyplot as plt
 import numpy as np
