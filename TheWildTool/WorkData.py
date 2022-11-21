@@ -305,6 +305,36 @@ class ProccessAudio:
 
                         tuple_list.append((from_abs, to_abs))
 
+
+                    elif info_dict['timeType'] == 'm:s':
+                        from_segment = speaker_segment[0].strip().split(':') # From time.
+                        from_m = int(from_segment[0]) * 60 # Minutes to seconds
+                        from_s = int(from_segment[1]) # Seconds
+                        from_abs = from_m + from_s
+
+                        to_segment = speaker_segment[1].strip().split(':') # To time.
+                        to_m = int(to_segment[0]) * 60 # Minutes to seconds
+                        to_s = int(to_segment[1]) # Seconds
+                        to_abs = to_m + to_s
+
+                        tuple_list.append((from_abs, to_abs))
+
+
+                    elif info_dict['timeType'] == 's':
+                        from_segment = speaker_segment[0].strip().split(':') # From time.
+                        from_s = int(from_segment[0]) # Seconds
+                        from_abs = from_s
+
+                        to_segment = speaker_segment[1].strip().split(':') # To time.
+                        to_s = int(to_segment[0]) # Seconds
+                        to_abs = to_s
+
+                        tuple_list.append((from_abs, to_abs))
+
+                    else:
+                        raise TimeTypeError()
+
+
             print(tuple_list)
 
 
