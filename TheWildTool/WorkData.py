@@ -316,8 +316,6 @@ class ProccessAudio:
                         to_s = int(to_segment[2]) # Seconds
                         to_abs = to_h + to_m + to_s
 
-                        tuple_list.append((from_abs, to_abs))
-
 
                     elif info_dict['timeType'] == 'm:s':
                         from_segment = speaker_segment[0].strip().split(':') # From time.
@@ -330,7 +328,6 @@ class ProccessAudio:
                         to_s = int(to_segment[1]) # Seconds
                         to_abs = to_m + to_s
 
-                        tuple_list.append((from_abs, to_abs))
 
 
                     elif info_dict['timeType'] == 's':
@@ -342,11 +339,14 @@ class ProccessAudio:
                         to_s = int(to_segment[0]) # Seconds
                         to_abs = to_s
 
-                        # TODO: devolver un diccionario en cual contenga el speaker y la tupla de segmentación, pero validar que el speaker exista.
-                        tuple_list.append((from_abs, to_abs))
-
                     else:
                         raise TimeTypeError()
+
+                    if speaker in info_dict['entities']:
+                        tuple_list.append({speaker: (from_abs, to_abs)})
+                    else:
+                        print(f'WARNING: We found an unknown speaker ({speaker}), it will not be added to the list of segments.\n')
+
 
 
             print(tuple_list)
