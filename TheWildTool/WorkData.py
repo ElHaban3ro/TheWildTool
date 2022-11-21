@@ -295,13 +295,20 @@ class ProccessAudio:
                 
                 segments_list = lines_inline.split('!')[1:] # Split by entitie.
 
-                # TODO: Support to comments in common line.
                 for segment in segments_list:
                     segment = segment.strip().replace('\n', '').split('-') # Separate "key value".
+                    
 
                     speaker = segment[0].strip()
+                    if '#' in speaker: # To comments.
+                        speaker = speaker[:speaker.find('#')].strip() # Redundancy, yesssssss (To eliminate unexpected blank spaces)
 
-                    speaker_segment = segment[1].strip().split('>')
+                    speaker_segment = segment[1].strip()
+                    if '#' in speaker_segment:
+                        speaker_segment = speaker_segment[:speaker_segment.find('#')].strip()
+                        
+                    speaker_segment = speaker_segment.split('>')
+
 
                     if info_dict['timeType'] == 'h:m:s':
                         from_segment = speaker_segment[0].strip().split(':') # From time.
