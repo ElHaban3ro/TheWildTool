@@ -250,7 +250,18 @@ class ProccessAudio:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
 
-    def segment(self, index, segment_file):
+    def segment(self, index:int, segment_file:str):
+        """Cut a long audio into small segments that you use to train a model or whatever else you decide.
+
+        Args:
+            index (int): Index of your element in the queue.
+            segment_file (str): Path of the segmentation file for that mp3 file in the list.
+
+        Raises:
+            ValueError: File with segmentation information.
+            NoHeaderError: Your file does not contain a header with the proper syntax. Check the documentation to learn more.
+            TimeTypeError: The time format is wrong or not yet supported.
+        """        
         tuple_list = []
 
         try:
@@ -283,6 +294,8 @@ class ProccessAudio:
                     lines_inline = f'{lines_inline} {line}'
                 
                 segments_list = lines_inline.split('!')[1:] # Split by entitie.
+
+                # TODO: Support to comments in common line.
                 for segment in segments_list:
                     segment = segment.strip().replace('\n', '').split('-') # Separate "key value".
 
@@ -329,6 +342,7 @@ class ProccessAudio:
                         to_s = int(to_segment[0]) # Seconds
                         to_abs = to_s
 
+                        # TODO: devolver un diccionario en cual contenga el speaker y la tupla de segmentación, pero validar que el speaker exista.
                         tuple_list.append((from_abs, to_abs))
 
                     else:
