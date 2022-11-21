@@ -10,7 +10,7 @@ setup(
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     packages = ['TheWildTool'],
-    version = '1.3',
+    version = '1.5.7',
     license = 'MIT',
     description = 'TheWildTool is a tool developed with the main objective of saving time when working with audio datasets. Either to prepare them, to get them or to train a model with them. 🤖',
     author = 'ElHaban3ro',
