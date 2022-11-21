@@ -376,6 +376,10 @@ class ProccessAudio:
 
             clip.close() # Close file.
 
+        print('\nSegmentation completed\n')
+
+
+
 class GenerateDataset:
     """Generates datasets based on multimedia content from the Internet. 
     """    
