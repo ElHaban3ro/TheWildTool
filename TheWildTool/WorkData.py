@@ -167,13 +167,16 @@ class ProccessAudio:
 
 
 
-
-
+    def queue_to_array(self):
+        """Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to read or listen to them.
+        """        
         for file_audio_route in self.extract_queue:
+            print('Reading file as Array...', '\r')
             audio = AudioFileClip(file_audio_route)
             a_array = audio.to_soundarray()
 
             self.mp3_array.append(a_array)
+            print('Read!', '\r')
 
         
 
@@ -247,6 +250,28 @@ class ProccessAudio:
         except IndexError:
             raise IndexError(f'(IndexOutOfRange) Pls, give a valid index. Remember: len of mp3 files to read is {len(self.mp3_array)} ')
 
+
+    def segment(self, index, segment_file):
+        try:
+            f_to_seg = self.extract_queue[index]
+            a_to_seg = self.mp3_array[index]
+
+        except IndexError:
+            raise ValueError(f'(OutOfIndexError) The index provided does not belong to any of the list. Remember that the length of the list is {len(self.extract_queue)}.')
+        
+        if os.path.isfile(segment_file): # File exist
+            # Name == file???? 
+            with open(segment_file, 'r+') as segments:
+                lines = segments.readlines()
+                
+                # Line 0 is the meta info line.
+                meta_info = lines[0].strip('][') # Return 3 objects list.
+                info_dict = {'datasetName': meta_info[0][1:], 'entities': meta_info[1].strip(', '), 'timeType': meta_info[2][:-1]}
+
+                print(info_dict)
+
+
+        
 
 
 class GenerateDataset:

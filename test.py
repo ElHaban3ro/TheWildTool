@@ -12,13 +12,11 @@
 
 
 
-# from TheWildTool.WorkData import VideoExtract
+from TheWildTool.WorkData import VideoExtract
 
-# extract = VideoExtract()
-# extract.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\0.mp4'])
-# # print(extract.converter_queue)
-
-# extract.to_audio(remove_original = False)
+extract = VideoExtract()
+extract.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\twp-clavero.mp4'])
+extract.to_audio(remove_original = False)
 
 
 
@@ -38,5 +36,9 @@
 
 
 
-with open('./template.aseg', 'r+') as f:
-    print(f.readlines())
+from TheWildTool.WorkData import ProccessAudio
+
+v = ProccessAudio()
+v.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3'])
+
+v.segment(0, r'C:\Users\ferdh\Desktop\Projects\TheWildTool\TWP-CLAVERO-SEG.aseg')

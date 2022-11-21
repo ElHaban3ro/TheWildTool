@@ -124,6 +124,18 @@ ProccessAudio.add_to_queue(route_files:  list)
 *Add your audios to the list, and then work with them.*
 
   
+
+-  **...queue_to_array:**
+
+```python
+
+ProccessAudio.queue_to_array()
+
+```
+
+*Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to read or listen to them.*
+
+  
   
 
 -  **...listen:**

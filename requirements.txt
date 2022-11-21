@@ -3,4 +3,3 @@ ipython
 scipy
 matplotlib
 yt-dlp
-# librosa
