@@ -40,5 +40,6 @@ from TheWildTool.WorkData import ProccessAudio
 
 v = ProccessAudio()
 v.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport\0-MyAudioDataset.mp3'])
+v.save_route = r'C:\Users\ferdh\Downloads\datatest\MyAudioDataset-AudioExport'
 
 v.segment(0, r'C:\Users\ferdh\Desktop\Projects\TheWildTool\TWP-CLAVERO-SEG.aseg')

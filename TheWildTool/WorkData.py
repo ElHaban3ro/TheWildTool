@@ -171,13 +171,12 @@ class ProccessAudio:
         """
         for file_audio_route in self.extract_queue:
             print('Reading file as Array...', '\r')
+
+            # TODO: ¿Aumentando el buffersize?
             audio = AudioFileClip(file_audio_route)
             a_array = audio.to_soundarray()
-
             self.mp3_array.append(a_array)
             print('Read!', '\r')
-
-        
 
 
 
@@ -306,7 +305,7 @@ class ProccessAudio:
                     speaker_segment = segment[1].strip()
                     if '#' in speaker_segment:
                         speaker_segment = speaker_segment[:speaker_segment.find('#')].strip()
-                        
+
                     speaker_segment = speaker_segment.split('>')
 
 
@@ -356,8 +355,26 @@ class ProccessAudio:
 
 
 
-            print(tuple_list)
+        if len(tuple_list) >= 1: # At least one segment found in the file.
+            audio_clip = AudioFileClip(self.extract_queue[index])
+            rate = audio_clip.fps
+            for segment_c, segment_time in enumerate(tuple_list):
+                segment_values = list(segment_time.values())[0]
+                from_v = segment_values[0]
+                to_v = segment_values[1]
+                speaker = list(segment_time.keys())[0]
+                
+                clip = audio_clip.subclip(from_v, to_v) # Cut clip!!!
+                clip_route_dir = f'{os.path.abspath(self.save_route)}/{self.dataset_name}-Clips'
+                try:
+                    os.mkdir(f'{clip_route_dir}')
+                except:
+                    pass
 
+                clip_route_file = f'{clip_route_dir}/{speaker}-{segment_c}-{self.dataset_name}-Clip.mp3'
+                clip.write_audiofile(clip_route_file) # SAVE CLIP!!!!
+
+            clip.close() # Close file.
 
 class GenerateDataset:
     """Generates datasets based on multimedia content from the Internet. 
