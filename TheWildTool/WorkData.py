@@ -251,6 +251,8 @@ class ProccessAudio:
 
 
     def segment(self, index, segment_file):
+        tuple_list = []
+
         try:
             f_to_seg = self.extract_queue[index]
             # a_to_seg = self.mp3_array[index] # Too bigger size. :/
@@ -289,12 +291,21 @@ class ProccessAudio:
                     speaker_segment = segment[1].strip().split('>')
 
                     if info_dict['timeType'] == 'h:m:s':
-                        from_seg = speaker_segment[0].strip().split(':') # From time.
+                        from_segment = speaker_segment[0].strip().split(':') # From time.
+                        from_h = int(from_segment[0]) * 3600 # Hours to seconds
+                        from_m = int(from_segment[1]) * 60 # Minutes to seconds
+                        from_s = int(from_segment[2]) # Seconds
+                        from_abs = from_h + from_m + from_s
 
+                        to_segment = speaker_segment[1].strip().split(':') # To time.
+                        to_h = int(to_segment[0]) * 3600 # Hours to seconds
+                        to_m = int(to_segment[1]) * 60 # Minutes to seconds
+                        to_s = int(to_segment[2]) # Seconds
+                        to_abs = to_h + to_m + to_s
 
+                        tuple_list.append((from_abs, to_abs))
 
-                        to_seg = speajer_segment[1].strip().split(':') # To time.
-        
+            print(tuple_list)
 
 
 class GenerateDataset:
