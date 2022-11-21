@@ -1,8 +1,8 @@
 # Header
-[DATASET NAME][list, of, persons, that, is, in, the, audio][time_type: h:m:s, m:s, s]
+[DATASET NAME][list, of, persons, that, is, in, the, audio][time_type: h:m:s, m:s, s][Video Name]
 
 # Example!
-[TheWildProject Dataset][Jordi, Nacho, Other][h:m:s]
+[TheWildProject Dataset][Jordi, Nacho, Other][h:m:s][TWP Clavero]
 
 
 
@@ -11,17 +11,17 @@
 
 
 # Example!
-- Jordi
-- 00:00:13 -> 00:00:30
+! Jordi # (!) To entitie
+- 00:00:13 > 00:00:30 # (-) to time
 
 
-- Jordi
-- 00:00:45 -> 00:01:03
+! Jordi
+- 00:00:45 > 00:01:03
 
 
-- Nacho
-- 00:01:05 -> 01:09:25
+! Nacho
+- 00:01:05 > 01:09:25
 
 
-- Other
-- 01:09:27 -> 01:08:56
+! Other
+- 01:09:27 > 01:08:56

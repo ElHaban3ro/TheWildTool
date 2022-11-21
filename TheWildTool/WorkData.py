@@ -1,18 +1,17 @@
+# Python libs.
 import os
-import time
 
-from threading import Thread
-
+# External libs.
 from moviepy.editor import VideoFileClip, AudioFileClip
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import IPython
-
-import soundfile as sf
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 from yt_dlp import YoutubeDL
+
+
+# Our libs
+from .TWTErrors import * # Errors classes
+
 
 
 class VideoExtract:
@@ -168,8 +167,8 @@ class ProccessAudio:
 
 
     def queue_to_array(self):
-        """Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to read or listen to them.
-        """        
+        """Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to see to them.
+        """
         for file_audio_route in self.extract_queue:
             print('Reading file as Array...', '\r')
             audio = AudioFileClip(file_audio_route)
@@ -254,7 +253,7 @@ class ProccessAudio:
     def segment(self, index, segment_file):
         try:
             f_to_seg = self.extract_queue[index]
-            a_to_seg = self.mp3_array[index]
+            # a_to_seg = self.mp3_array[index] # Too bigger size. :/
 
         except IndexError:
             raise ValueError(f'(OutOfIndexError) The index provided does not belong to any of the list. Remember that the length of the list is {len(self.extract_queue)}.')
@@ -263,14 +262,38 @@ class ProccessAudio:
             # Name == file???? 
             with open(segment_file, 'r+') as segments:
                 lines = segments.readlines()
-                
                 # Line 0 is the meta info line.
-                meta_info = lines[0].strip('][') # Return 3 objects list.
-                info_dict = {'datasetName': meta_info[0][1:], 'entities': meta_info[1].strip(', '), 'timeType': meta_info[2][:-1]}
+                meta_info = lines[0].split('][') # Return 3 objects list.
+                try:
+                    info_dict = {'datasetName': meta_info[0][1:], 'entities': meta_info[1].split(', '), 'timeType': meta_info[2], 'videoName': meta_info[3][:-2]} # Header!
+                except IndexError:
+                    raise NoHeaderError()
 
-                print(info_dict)
+
+                lines_inline = ''
+
+                for line in lines[1:]:
+                    if '\n' in line[:1]: # empty
+                        continue
+                    elif line[0] == '#': # Commented line.
+                        continue
+                    
+                    lines_inline = f'{lines_inline} {line}'
+                
+                segments_list = lines_inline.split('!')[1:] # Split by entitie.
+                for segment in segments_list:
+                    segment = segment.strip().replace('\n', '').split('-') # Separate "key value".
+
+                    speaker = segment[0].strip()
+
+                    speaker_segment = segment[1].strip().split('>')
+
+                    if info_dict['timeType'] == 'h:m:s':
+                        from_seg = speaker_segment[0].strip().split(':') # From time.
 
 
+
+                        to_seg = speajer_segment[1].strip().split(':') # To time.
         
 
 

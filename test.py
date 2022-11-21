@@ -12,11 +12,11 @@
 
 
 
-from TheWildTool.WorkData import VideoExtract
+# from TheWildTool.WorkData import VideoExtract
 
-extract = VideoExtract()
-extract.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\twp-clavero.mp4'])
-extract.to_audio(remove_original = False)
+# extract = VideoExtract()
+# extract.add_to_queue([r'C:\Users\ferdh\Downloads\datatest\twp-clavero.mp4'])
+# extract.to_audio(remove_original = False)
 
 
 

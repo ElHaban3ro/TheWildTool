@@ -133,7 +133,7 @@ ProccessAudio.queue_to_array()
 
 ```
 
-*Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to read or listen to them.*
+*Transforms the tail array into numpy arrays. If you do not process the audios with this method you will not be able to see to them.*
 
   
   
